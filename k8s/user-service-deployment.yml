@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: yourrepo/user-service:1.0.2
+        ports:
+        - containerPort: 8083
+        env:
+        - name: spring.application.name
+          value: "user-service"
+        - name: eureka.client.service-url.defaultZone
+          value: "http://eurekaserver:8761/eureka/"
+        - name: spring.datasource.url
+          value: "jdbc:mysql://mysql:3306/dbecommerce_user?useSSL=false&serverTimezone=UTC"
+        - name: spring.datasource.username
+          value: "root"
+        - name: spring.datasource.password
+          value: "root_password"
